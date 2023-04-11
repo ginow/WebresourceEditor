@@ -22,11 +22,11 @@
 - Open the HTML file (`<your_org_here>/WebResources/web_editor.html`).
 - Enter any webresource name you want to edit.
 
-      ![popup](resources/popup.png)
+  ![popup](resources/popup.png)
 
 - Press CTRL+S to save and CTRL+P to publish.
 
-      ![editor](resources/editor.png)
+  ![editor](resources/editor.png)
 
 <style>
     img {
