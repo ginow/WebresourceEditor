@@ -10,6 +10,11 @@ const notificationType = {
     error: 'error',
     success: 'success'
 }
+const webresourceType = {
+    html: 1,
+    css: 2,
+    javascript: 3
+}
 var notification;
 function showNotification(text, type, duration) {
     notification.innerText = text;
@@ -22,7 +27,17 @@ function hideNotification() {
 }
 async function onLoad() {
     notification = document.getElementById("notification");
+    var language;
     var webResource = await getWebresource();
+    switch (webResource.webresourcetype) {
+        case webresourceType.html: language = 'html';
+            break;
+        case webresourceType.css: language = 'css';
+            break;
+        case webresourceType.javascript: language = 'javascript';
+            break;
+        default: language = 'text'
+    }
     // Configure the loader to use the minified version of the editor
     self.MonacoEnvironment = {
         getWorkerUrl: function (workerId, label) {
@@ -39,7 +54,7 @@ async function onLoad() {
     require(['vs/editor/editor.main'], function () {
         var editor = monaco.editor.create(document.getElementById('editorContainer'), {
             value: webResource.content,
-            language: 'javascript',
+            language: language,
             theme: 'vs-dark'
         });
         // Define the command to execute when Ctrl+S is pressed (Save the webresource)
@@ -55,12 +70,14 @@ async function onLoad() {
 async function getWebresource() {
     try {
         var webResourceName = prompt("Please enter webresource name:", "");
+        document.title = webResourceName;
         var webResource = {
             webresourceid: null,
-            content: null
+            content: null,
+            webresourcetype: null
         }
         showNotification("Retrieving webresource, please wait...", notificationType.info)
-        var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset?$select=content,webresourceid&$filter=name eq '" + webResourceName + "'", {
+        var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset?$select=content,webresourceid,webresourcetype&$filter=name eq '" + webResourceName + "'", {
             method: "GET",
             headers: headers
         })
@@ -68,16 +85,17 @@ async function getWebresource() {
         if (data.value.length > 0) {
             const encodedContent = data.value[0]["content"];
             webResource.content = atob(encodedContent);
-            webResource.webresourceid = data.value[0]["webresourceid"]
+            webResource.webresourceid = data.value[0]["webresourceid"];
+            webResource.webresourcetype = data.value[0]["webresourcetype"];
             showNotification("Webresource retrieved successfully. Use CTRL+S to save, CTRL+P to publish to D365.", notificationType.success, 10);
             return webResource;
         }
         else {
-            showNotification(webResourceName + " not found", notificationType.error, 5);
+            showNotification(webResourceName + " not found. Please refresh the page and try again", notificationType.error);
         }
     }
     catch (ex) {
-        showNotification(ex.message, notificationType.error, 10);
+        showNotification(ex.message, notificationType.error);
     }
 }
 async function updateWebresource(content, webresourceid) {
@@ -99,7 +117,7 @@ async function updateWebresource(content, webresourceid) {
         showNotification("Webresource saved successfully.", notificationType.success, 5);
     }
     catch (ex) {
-        showNotification(ex.message, notificationType.error, 10)
+        showNotification(ex.message, notificationType.error)
     }
 }
 async function publishWebResource(webresourceid) {
@@ -116,9 +134,9 @@ async function publishWebResource(webresourceid) {
         if (response.ok) {
             showNotification("Web resource published successfully.", notificationType.success, 5);
         } else {
-            showNotification(response.statusText, notificationType.error, 10);
+            showNotification(response.statusText, notificationType.error);
         }
     } catch (error) {
-        showNotification(error.message, notificationType.error, 10);
+        showNotification(error.message, notificationType.error);
     }
 }
