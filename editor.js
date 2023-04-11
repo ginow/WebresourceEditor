@@ -65,6 +65,10 @@ async function onLoad() {
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyP, function () {
             publishWebResource(webResource.webresourceid);
         })
+        // Define the command to execute when Ctrl+W is pressed (Open the webresource)
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyO, function () {
+            openWebResource(webResource.name);
+        })
     })
 }
 async function getWebresource() {
@@ -72,6 +76,7 @@ async function getWebresource() {
         var webResourceName = prompt("Please enter webresource name:", "");
         document.title = webResourceName;
         var webResource = {
+            name: webResourceName,
             webresourceid: null,
             content: null,
             webresourcetype: null
@@ -139,4 +144,8 @@ async function publishWebResource(webresourceid) {
     } catch (error) {
         showNotification(error.message, notificationType.error);
     }
+}
+function openWebResource(name) {
+    const url = window.location.origin + '/WebResources/' + name;
+    window.open(url, "_blank");
 }

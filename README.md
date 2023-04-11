@@ -24,9 +24,19 @@
 
   ![popup](resources/popup.png)
 
+  For example for below webresource the name will be `con_samplewebresource.js`
+
+  ![name](resources/name.png)
+
 - Press CTRL+S to save and CTRL+P to publish.
 
   ![editor](resources/editor.png)
+
+- Press CTRL+O to open the webresource in new tab.
+
+## References
+
+- Monaco editor: https://microsoft.github.io/monaco-editor/playground.html
 
 <style>
     img {
