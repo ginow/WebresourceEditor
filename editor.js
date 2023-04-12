@@ -27,6 +27,7 @@ function hideNotification() {
 }
 async function onLoad() {
     notification = document.getElementById("notification");
+    createCustomAPI();
     var language;
     var webResource = await getWebresource();
     switch (webResource.webresourcetype) {
@@ -148,4 +149,79 @@ async function publishWebResource(webresourceid) {
 function openWebResource(name) {
     const url = window.location.origin + '/WebResources/' + name;
     window.open(url, "_blank");
+}
+async function createCustomAPI() {
+    try {
+        var response = await fetch(window.location.origin + "/api/data/v9.2/customapis?$filter=uniquename eq 'web_update' &$select=customapiid")
+        const data = await response.json();
+        if (data.value.length == 0) {
+            // API doesn't exist so create it (in default solution)
+            body = {
+                "allowedcustomprocessingsteptype": 0,
+                "boundentitylogicalname": null,
+                "uniquename": "web_update",
+                "displayname": "Update Webresource",
+                "bindingtype": 0,
+                "executeprivilegename": null,
+                "isfunction": false,
+                "isprivate": false,
+                "name": "UpdateWebresource",
+                "description": "UpdateWebresource",
+                "iscustomizable": {
+                    "Value": true
+                },
+                "CustomAPIRequestParameters": [
+                    {
+                        "type": 10,
+                        "isoptional": false,
+                        "displayname": "UpdateWebresource.content",
+                        "name": "UpdateWebresource.content",
+                        "uniquename": "content",
+                        "logicalentityname": null,
+                        "description": "UpdateWebresource.content",
+                        "iscustomizable": {
+                            "Value": true
+                        }
+                    },
+                    {
+                        "type": 10,
+                        "isoptional": false,
+                        "displayname": "UpdateWebresource.webresourceid",
+                        "name": "UpdateWebresource.webresourceid",
+                        "uniquename": "webresourceid",
+                        "logicalentityname": null,
+                        "description": "UpdateWebresource.webresourceid",
+                        "iscustomizable": {
+                            "Value": true
+                        }
+                    }
+                ],
+                "CustomAPIResponseProperties": [
+                    {
+                        "type": 10,
+                        "name": "UpdateWebresource.response",
+                        "logicalentityname": null,
+                        "displayname": "UpdateWebresource.response",
+                        "uniquename": "response",
+                        "description": "UpdateWebresource.response",
+                        "iscustomizable": {
+                            "Value": true
+                        }
+                    }
+                ],
+                "PluginTypeId@odata.bind": "plugintypes(a8de3897-c9de-480c-8007-9e618c9d2ea8)"
+            }
+            await fetch(window.location.origin + "/api/data/v9.2/customapis", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'MSCRM.SolutionUniqueName': 'Default'
+                },
+                body: JSON.stringify(body)
+            })
+        }
+    }
+    catch (error) {
+        showNotification("Error in createCustomAPI: " + error.message);
+    }
 }
