@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CustomActions>
+    <CustomAction Id="web.ApplicationRibbon.WebresourceEditor.Button.CustomAction"
+      Location="Mscrm.BasicHomeTab.Tools.Controls._children" Sequence="55">
+      <CommandUIDefinition>
+        <Button Alt="$LocLabels:web.ApplicationRibbon.WebresourceEditor.Button.Alt"
+          Command="web.ApplicationRibbon.WebresourceEditor.Command"
+          Id="web.ApplicationRibbon.WebresourceEditor.Button"
+          Image16by16="$webresource:web_editoricon.png"
+          LabelText="$LocLabels:web.ApplicationRibbon.WebresourceEditor.Button.LabelText"
+          Sequence="55" TemplateAlias="isv"
+          ToolTipTitle="$LocLabels:web.ApplicationRibbon.WebresourceEditor.Button.ToolTipTitle"
+          ToolTipDescription="$LocLabels:web.ApplicationRibbon.WebresourceEditor.Button.ToolTipDescription" />
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
+  <Templates>
+    <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+  </Templates>
+  <CommandDefinitions>
+    <CommandDefinition Id="web.ApplicationRibbon.WebresourceEditor.Command">
+      <EnableRules />
+      <DisplayRules>
+        <DisplayRule Id="web.ApplicationRibbon.WebresourceEditor.DisplayRule" />
+      </DisplayRules>
+      <Actions>
+        <Url Address="$webresource:web_editor.html" WinMode="0" />
+      </Actions>
+    </CommandDefinition>
+  </CommandDefinitions>
+  <RuleDefinitions>
+    <TabDisplayRules />
+    <DisplayRules>
+      <DisplayRule Id="web.ApplicationRibbon.WebresourceEditor.DisplayRule">
+        <OrRule>
+          <Or>
+            <PageRule Address="/tools/Solution/home_solution.aspx" />
+          </Or>
+          <Or>
+            <PageRule Address="/tools/systemcustomization/systemcustomization.aspx" />
+          </Or>
+          <Or>
+            <CrmClientTypeRule Type="Outlook" />
+            <MiscellaneousPrivilegeRule PrivilegeName="ImportCustomization" />
+          </Or>
+        </OrRule>
+      </DisplayRule>
+    </DisplayRules>
+    <EnableRules />
+  </RuleDefinitions>
+  <LocLabels>
+    <LocLabel Id="web.ApplicationRibbon.WebresourceEditor.Button.Alt">
+      <Titles>
+        <Title description="Webresource Editor" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="web.ApplicationRibbon.WebresourceEditor.Button.LabelText">
+      <Titles>
+        <Title description="Webresource Editor" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="web.ApplicationRibbon.WebresourceEditor.Button.ToolTipDescription">
+      <Titles>
+        <Title description="VS Code like Webresource Editor in browser" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="web.ApplicationRibbon.WebresourceEditor.Button.ToolTipTitle">
+      <Titles>
+        <Title description="Webresource Editor" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
+</RibbonDiffXml>

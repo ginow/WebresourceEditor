@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Webresource Editor</title>
+    <!-- Include Monaco editor's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/monaco-editor@0.37.1/min/vs/editor/editor.main.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background-color: black;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #editorContainer {
+            height: 100vh;
+        }
+
+        #notification {
+            padding: 10px;
+            width: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        .error {
+            background-color: rgb(252, 194, 194)
+                /*light red*/
+        }
+
+        .success {
+            background-color: rgb(223, 246, 221)
+        }
+
+        .info {
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+
+<body onload="onLoad()">
+    <div id="notification"></div>
+    <div id="editorContainer"></div>
+    <script src="https://unpkg.com/monaco-editor@0.37.1/min/vs/loader.js"></script>
+    <script src="/WebResources/web_editor.js"></script>
+</body>
+
+</html>
