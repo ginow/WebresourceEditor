@@ -13,23 +13,79 @@ const notificationType = {
 const webresourceType = {
     html: 1,
     css: 2,
-    javascript: 3
+    javascript: 3,
+    xml: 4,
+    png: 5,
+    jpg: 6,
+    gif: 7,
+    xap: 8,
+    xsl: 9,
+    ico: 10,
+    svg: 11,
+    resx: 12
 }
+
 var notification;
-function showNotification(text, type, duration) {
-    notification.innerText = text;
-    notification.style.display = 'block'
-    notification.className = type
-    duration && setTimeout(hideNotification, duration * 1000);
+async function search() {
+    var webresources = [];
+    var searchText = document.getElementById("searchInput").value;
+    var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset?$select=displayname,webresourceid,webresourcetype,modifiedon,name&$filter=contains(name,'" + searchText + "') or contains(displayname,'" + searchText + "')", {
+        method: "GET",
+        headers: headers
+    })
+
+    webresources = await response.json();
+    webresources = webresources.value;
+    const ul = document.getElementById("webresourceslist");
+    if (webresources.length > 0) {
+        document.getElementById("header").style.display = "inline";
+    }
+    else {
+        var li = document.getElementById("header");
+        li.style.display = "none";
+        li.innerHTML = "";
+        showNotification(searchText + " not found. Please check and try again.", notificationType.error, 5);
+    }
+
+    const webresource = webresources.map((each) => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.id = each.webresourceid;
+        a.href = "#";
+        a.onclick = selectWebresource;
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "cell";
+        nameDiv.textContent = each.name;
+        const displaynameDiv = document.createElement("div");
+        displaynameDiv.className = "cell";
+        displaynameDiv.textContent = each.displayname;
+        const typeDiv = document.createElement("div");
+        typeDiv.className = "cell";
+        typeDiv.textContent = getWebResourceTypeString(each.webresourcetype);
+        const modifiedonDiv = document.createElement("div");
+        modifiedonDiv.className = "cell";
+        modifiedonDiv.textContent = each.modifiedon;
+        a.appendChild(nameDiv);
+        a.appendChild(displaynameDiv);
+        a.appendChild(typeDiv);
+        a.appendChild(modifiedonDiv);
+        li.appendChild(a);
+        return li;
+    });
+
+    // Append list items to ul
+    ul.append(...webresource);
+
 }
-function hideNotification() {
-    notification.style.display = 'none'
-}
-async function onLoad() {
-    notification = document.getElementById("notification");
-    createCustomAPI();
+async function selectWebresource(event) {
+    let target = event.target;
+    while (target.tagName !== 'A') {
+        target = target.parentElement;
+    }
+    document.getElementById("searchContainer").style.display = "none";
+    document.getElementById("editorContainer").style.display = "block";
     var language;
-    var webResource = await getWebresource();
+    var webResource = await getWebresource(target.id);
     switch (webResource.webresourcetype) {
         case webresourceType.html: language = 'html';
             break;
@@ -72,33 +128,72 @@ async function onLoad() {
         })
     })
 }
-async function getWebresource() {
+function getWebResourceTypeString(typeNumber) {
+    switch (typeNumber) {
+        case webresourceType.html:
+            return 'html';
+        case webresourceType.css:
+            return 'css';
+        case webresourceType.javascript:
+            return 'javascript';
+        case webresourceType.xml:
+            return 'xml';
+        case webresourceType.png:
+            return 'png';
+        case webresourceType.jpg:
+            return 'jpg';
+        case webresourceType.gif:
+            return 'gif';
+        case webresourceType.xap:
+            return 'xap';
+        case webresourceType.xsl:
+            return 'xsl';
+        case webresourceType.ico:
+            return 'ico';
+        case webresourceType.svg:
+            return 'svg';
+        case webresourceType.resx:
+            return 'resx';
+        default:
+            return 'unknown format';
+    }
+}
+function showNotification(text, type, duration) {
+    notification.innerText = text;
+    notification.style.display = 'block'
+    notification.className = type
+    duration && setTimeout(hideNotification, duration * 1000);
+}
+function hideNotification() {
+    notification.style.display = 'none'
+}
+async function onLoad() {
+    notification = document.getElementById("notification");
+    document.getElementById("editorContainer").style.display = "none";
+    createCustomAPI();
+}
+async function getWebresource(webresourceid) {
     try {
-        var webResourceName = prompt("Please enter webresource name:", "");
-        document.title = webResourceName;
         var webResource = {
-            name: webResourceName,
-            webresourceid: null,
+            name: null,
+            webresourceid: webresourceid,
             content: null,
             webresourcetype: null
         }
         showNotification("Retrieving webresource, please wait...", notificationType.info)
-        var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset?$select=content,webresourceid,webresourcetype&$filter=name eq '" + webResourceName + "'", {
+        var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset(" + webresourceid + ")?$select=content,name,webresourceid,webresourcetype", {
             method: "GET",
             headers: headers
         })
         const data = await response.json();
-        if (data.value.length > 0) {
-            const encodedContent = data.value[0]["content"];
-            webResource.content = atob(encodedContent);
-            webResource.webresourceid = data.value[0]["webresourceid"];
-            webResource.webresourcetype = data.value[0]["webresourcetype"];
-            showNotification("Webresource retrieved successfully. Use CTRL+S to save, CTRL+P to publish to D365.", notificationType.success, 10);
-            return webResource;
-        }
-        else {
-            showNotification(webResourceName + " not found. Please refresh the page and try again", notificationType.error);
-        }
+        const encodedContent = data["content"];
+        webResource.content = atob(encodedContent);
+        webResource.webresourceid = data["webresourceid"];
+        webResource.webresourcetype = data["webresourcetype"];
+        webResource.name = data["name"]
+        showNotification("Webresource retrieved successfully. Use CTRL+S to save, CTRL+P to publish to D365.", notificationType.success, 10);
+        document.title = webResource.name;
+        return webResource;
     }
     catch (ex) {
         showNotification(ex.message, notificationType.error);
@@ -120,7 +215,7 @@ async function updateWebresource(content, webresourceid) {
             },
             body: body
         })
-        showNotification("Webresource saved successfully.", notificationType.success, 5);
+        showNotification("Webresource saved successfully. Press CTRL+P to publish it.", notificationType.success, 5);
     }
     catch (ex) {
         showNotification(ex.message, notificationType.error)

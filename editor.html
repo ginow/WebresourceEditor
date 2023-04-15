@@ -42,12 +42,73 @@
         .info {
             background-color: lightgrey;
         }
+
+        #webresourceslist {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10;
+        }
+
+        #webresourceslist li a {
+            padding: 12px;
+            text-decoration: none;
+            display: flex;
+            color: white;
+            background-color: rgb(27, 27, 27);
+        }
+
+        #webresourceslist li a:hover {
+            background-color: #333333;
+        }
+
+        .cell {
+            flex-direction: row;
+            color: white;
+            flex: 0 0 25%;
+        }
+
+        input[type="search"] {
+            background-color: #191919;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            padding: 12px;
+            margin-right: 10px;
+            width: 50%;
+        }
+
+        button#search {
+            background-color: #191919;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        button#search:hover {
+            background-color: #282828;
+        }
     </style>
 </head>
 
 <body onload="onLoad()">
     <div id="notification"></div>
     <div id="editorContainer"></div>
+    <div id="searchContainer">
+        <input id="searchInput" type="search" />
+        <button id="search" onClick="search()">Search</button>
+        <ul id="webresourceslist">
+            <li id="header" style="display: none; ">
+                <a href="#" style="background-color: #2f2f2f;">
+                    <div class="cell">Name</div>
+                    <div class="cell">Display Name</div>
+                    <div class="cell">Type</div>
+                    <div class="cell">Modified On</div>
+                </a>
+            </li>
+        </ul>
+    </div>
     <script src="https://unpkg.com/monaco-editor@0.37.1/min/vs/loader.js"></script>
     <script src="/WebResources/web_editor.js"></script>
 </body>
