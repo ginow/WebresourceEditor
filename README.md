@@ -9,7 +9,7 @@ The solution for above problem is to have an editor like VS Code in the CRM itse
 
 ## Installation
 
-- Download and import the managed solution `WebresourceEditor_managed.zip` from the `solution` folder or the `Releases` section of this project.
+- Download and import the managed solution `WebresourceEditor_managed.zip` from the `Releases` section of this project.
 
 ## Usage
 
@@ -19,13 +19,11 @@ The solution for above problem is to have an editor like VS Code in the CRM itse
 
 - Enter any webresource name you want to edit.
 
-  ![popup](resources/popup.png)
-
-  For example for below webresource the name will be `con_samplewebresource.js`
+  For example for below webresource the name will be `con_samplewebresource.js`. You can even partially enter the name like `sample`.
 
   ![name](resources/name.png)
 
-- Press CTRL+S to save and CTRL+P to publish.
+- Press CTRL+S to save, CTRL+P to publish or CTRL+SHIFT+P to save and publish.
 
   ![editor](resources/editor.png)
 

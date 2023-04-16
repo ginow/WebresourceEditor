@@ -29,7 +29,11 @@ var notification;
 async function search() {
     var webresources = [];
     var searchText = document.getElementById("searchInput").value;
-    var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset?$select=displayname,webresourceid,webresourcetype,modifiedon,name&$filter=contains(name,'" + searchText + "') or contains(displayname,'" + searchText + "')", {
+    // Get all list items except the header
+    const listItems = document.querySelectorAll("#webresourceslist li:not(#header)");
+    // Remove existing li
+    listItems.forEach(element => element.remove());
+    var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset?$select=displayname,webresourceid,webresourcetype,modifiedon,name&$filter=contains(name,'" + searchText + "') or contains(displayname,'" + searchText + "')&$orderby=name&$top=100", {
         method: "GET",
         headers: headers
     })
@@ -54,16 +58,16 @@ async function search() {
         a.href = "#";
         a.onclick = selectWebresource;
         const nameDiv = document.createElement("div");
-        nameDiv.className = "cell";
+        nameDiv.className = "name";
         nameDiv.textContent = each.name;
         const displaynameDiv = document.createElement("div");
-        displaynameDiv.className = "cell";
+        displaynameDiv.className = "displayname";
         displaynameDiv.textContent = each.displayname;
         const typeDiv = document.createElement("div");
-        typeDiv.className = "cell";
+        typeDiv.className = "type";
         typeDiv.textContent = getWebResourceTypeString(each.webresourcetype);
         const modifiedonDiv = document.createElement("div");
-        modifiedonDiv.className = "cell";
+        modifiedonDiv.className = "modifiedon";
         modifiedonDiv.textContent = each.modifiedon;
         a.appendChild(nameDiv);
         a.appendChild(displaynameDiv);
@@ -82,7 +86,7 @@ async function selectWebresource(event) {
     while (target.tagName !== 'A') {
         target = target.parentElement;
     }
-    document.getElementById("searchContainer").style.display = "none";
+    document.getElementById("searchContainer").remove();
     document.getElementById("editorContainer").style.display = "block";
     var language;
     var webResource = await getWebresource(target.id);
@@ -122,9 +126,13 @@ async function selectWebresource(event) {
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyP, function () {
             publishWebResource(webResource.webresourceid);
         })
-        // Define the command to execute when Ctrl+W is pressed (Open the webresource)
+        // Define the command to execute when Ctrl+O is pressed (Open the webresource)
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyO, function () {
             openWebResource(webResource.name);
+        })
+        // Define the command to execute when Ctrl+Shift+P is pressed (Update and Publish the webresource)
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyP, function () {
+            updateAndPublish(editor.getValue(), webResource.webresourceid);
         })
     })
 }
@@ -169,6 +177,14 @@ function hideNotification() {
 }
 async function onLoad() {
     notification = document.getElementById("notification");
+    document.getElementById("searchInput").focus();
+    // Add event listener to search input text box to detect Enter key press
+    document.getElementById("searchInput").addEventListener("keyup", function (event) {
+        if (event.key === 'Enter') {
+            // Call search function when user presses Enter key
+            search();
+        }
+    });
     document.getElementById("editorContainer").style.display = "none";
     createCustomAPI();
 }
@@ -191,7 +207,7 @@ async function getWebresource(webresourceid) {
         webResource.webresourceid = data["webresourceid"];
         webResource.webresourcetype = data["webresourcetype"];
         webResource.name = data["name"]
-        showNotification("Webresource retrieved successfully. Use CTRL+S to save, CTRL+P to publish to D365.", notificationType.success, 10);
+        showNotification("Webresource retrieved successfully. Use CTRL+S to save, CTRL+P to publish or CTRL+SHIFT+P to save and publish to D365.", notificationType.success, 10);
         document.title = webResource.name;
         return webResource;
     }
@@ -240,6 +256,10 @@ async function publishWebResource(webresourceid) {
     } catch (error) {
         showNotification(error.message, notificationType.error);
     }
+}
+async function updateAndPublish(content, webresourceid) {
+    await updateWebresource(content, webresourceid);
+    await publishWebResource(webresourceid);
 }
 function openWebResource(name) {
     const url = window.location.origin + '/WebResources/' + name;
