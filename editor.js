@@ -26,14 +26,17 @@ const webresourceType = {
 }
 
 var notification;
+var button = document.getElementById("search");
+var spinner = document.getElementById("spinner");
 async function search() {
     var webresources = [];
     var searchText = document.getElementById("searchInput").value;
+    spinnerVisibility(true);
     // Get all list items except the header
     const listItems = document.querySelectorAll("#webresourceslist li:not(#header)");
     // Remove existing li
     listItems.forEach(element => element.remove());
-    var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset?$select=displayname,webresourceid,webresourcetype,modifiedon,name&$filter=contains(name,'" + searchText + "') or contains(displayname,'" + searchText + "')&$orderby=name&$top=100", {
+    var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset?$select=displayname,webresourceid,webresourcetype,modifiedon,name&$filter=contains(name,'" + searchText + "') or contains(displayname,'" + searchText + "')&$orderby=name", {
         method: "GET",
         headers: headers
     })
@@ -79,7 +82,7 @@ async function search() {
 
     // Append list items to ul
     ul.append(...webresource);
-
+    spinnerVisibility(false);
 }
 async function selectWebresource(event) {
     let target = event.target;
@@ -338,5 +341,16 @@ async function createCustomAPI() {
     }
     catch (error) {
         showNotification("Error in createCustomAPI: " + error.message);
+    }
+}
+function spinnerVisibility(visible) {
+    if (visible) {
+        // show spinner
+        button.disabled = true;
+        spinner.style.display = "inline-block";
+    }
+    else {
+        spinner.style.display = "none";
+        button.disabled = false;
     }
 }
