@@ -9,7 +9,7 @@ The solution for above problem is to have an editor like VS Code in the CRM itse
 
 ## Installation
 
-- Download and import the managed solution `WebresourceEditor_managed.zip` from the `Releases` section of this project.
+- Download and import the managed solution `WebresourceEditor_managed.zip` from the ![releases](https://github.com/ginow/WebresourceEditor/releases) section of this project.
 
 ## Usage
 
@@ -33,9 +33,3 @@ The solution for above problem is to have an editor like VS Code in the CRM itse
 ## References
 
 - Monaco editor: https://microsoft.github.io/monaco-editor/playground.html
-
-<style>
-    img {
-      max-height:300px;
-    }
-</style>
