@@ -1,6 +1,6 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-
+  import { data } from "../assets/sampledata";
   let editor;
 
   onMount(() => {
@@ -20,7 +20,7 @@
         editor = monaco.editor.create(
           document.getElementById("monaco-editor"),
           {
-            value: "",
+            value: data,
             language: "javascript",
             theme: "vs-dark",
           }
@@ -36,7 +36,6 @@
   });
   function handleResize() {
     editor.layout();
-    console.log("resized");
   }
 </script>
 
