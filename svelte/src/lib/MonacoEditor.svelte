@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
 
   let editor;
 
@@ -25,18 +25,25 @@
             theme: "vs-dark",
           }
         );
+        handleResize();
+        window.addEventListener("resize", handleResize);
       });
     };
-
     document.body.appendChild(loaderScript);
   });
+  onDestroy(() => {
+    window.removeEventListener("resize", handleResize);
+  });
+  function handleResize() {
+    editor.layout();
+    console.log("resized");
+  }
 </script>
 
 <div id="monaco-editor" />
 
 <style>
   #monaco-editor {
-    width: 100%;
-    height: 400px;
+    height: 100vh;
   }
 </style>
