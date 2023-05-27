@@ -1,0 +1,2 @@
+D:\source\PowerApps\WebresourceEditor\plugin\bin\Debug\net462\publish\WebresourceEditor.dll
+D:\source\PowerApps\WebresourceEditor\plugin\bin\Debug\net462\publish\WebresourceEditor.pdb
