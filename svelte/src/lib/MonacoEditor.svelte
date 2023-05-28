@@ -1,6 +1,7 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import { data } from "../assets/sampledata";
+  import { onMount, onDestroy, afterUpdate } from "svelte";
+
+  export let selectedTab;
   let editor;
 
   onMount(() => {
@@ -20,8 +21,8 @@
         editor = monaco.editor.create(
           document.getElementById("monaco-editor"),
           {
-            value: data,
-            language: "javascript",
+            value: selectedTab.content,
+            language: selectedTab.type,
             theme: "vs-dark",
           }
         );
@@ -31,9 +32,22 @@
     };
     document.body.appendChild(loaderScript);
   });
-  onDestroy(() => {
-    window.removeEventListener("resize", handleResize);
+
+  afterUpdate(() => {
+    // Update the editor's content when selectedTab changes
+    if (editor && selectedTab) {
+      const model = editor.getModel();
+      model.setValue(selectedTab.content);
+    }
   });
+
+  onDestroy(() => {
+    if (editor) {
+      editor.dispose();
+      window.removeEventListener("resize", handleResize);
+    }
+  });
+
   function handleResize() {
     editor.layout();
   }

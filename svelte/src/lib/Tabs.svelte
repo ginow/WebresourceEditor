@@ -1,28 +1,20 @@
 <script>
   import { onMount } from "svelte";
-
   let activeTabIndex = 0;
-  let tabs = [
-    { id: 1, title: "some long name of the File 1" },
-    { id: 2, title: "File 2" },
-    { id: 3, title: "File 3" },
-    { id: 4, title: "File 4" },
-    { id: 5, title: "File 5" },
-    { id: 6, title: "File 6" },
-    { id: 7, title: "File 7" },
-    { id: 8, title: "File 8" },
-    { id: 9, title: "File 9" },
-    { id: 10, title: "File 10" },
-    { id: 11, title: "File 11" },
-  ];
+  export let tabs;
 
   function switchTab(index) {
     activeTabIndex = index;
+    const event = new CustomEvent("tabSelected", {
+      detail: {
+        selectedTab: tabs[activeTabIndex].id,
+      },
+    });
+    dispatchEvent(event);
   }
 
   function closeTab(index) {
     const wasActiveTab = index === activeTabIndex;
-
     tabs.splice(index, 1);
     if (wasActiveTab && index > 0) {
       activeTabIndex = index - 1;
@@ -38,6 +30,7 @@
       activeTabElement.scrollIntoView({ inline: "center" });
     }
   });
+  let activeFile = tabs[activeTabIndex].id;
 </script>
 
 <main>
@@ -60,11 +53,7 @@
                 closeTab(index);
               }
             }}
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 50 50"
-              width="50px"
-              height="50px"
+            ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"
               ><path
                 d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"
               /></svg
@@ -74,12 +63,6 @@
       </div>
     {/each}
   </div>
-
-  <div class="content">
-    {#if tabs[activeTabIndex]}
-      <p>{tabs[activeTabIndex].title} content goes here.</p>
-    {/if}
-  </div>
 </main>
 
 <style>
@@ -88,16 +71,16 @@
     overflow-x: auto;
     background-color: #333;
     padding: 0;
-    margin-bottom: -2px;
     scrollbar-width: thin;
     scrollbar-color: #ccc #f5f5f5;
+    height: 30px;
   }
 
   .tab {
     display: flex;
     align-items: center;
     padding: 8px 30px 8px 12px;
-    background-color: #444;
+    background-color: #454545;
     cursor: pointer;
     color: #a4a4a4;
     transition: background-color 0.3s ease;
@@ -106,15 +89,6 @@
 
   .tab.active {
     background-color: #212121;
-    border-bottom: 1px solid #ccc;
-    color: #a4a4a4;
-  }
-
-  .content {
-    padding: 16px;
-    border: 1px solid #ccc;
-    border-top: none;
-    background-color: #333;
     color: #a4a4a4;
   }
 
