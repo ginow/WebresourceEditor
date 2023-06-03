@@ -1,7 +1,11 @@
 <script>
   import { onMount } from "svelte";
+  import { writable } from "svelte/store";
+
   let activeTabIndex = 0;
   export let tabs;
+
+  const reactiveTabs = writable(tabs);
 
   function switchTab(index) {
     activeTabIndex = index;
@@ -15,12 +19,15 @@
 
   function closeTab(index) {
     const wasActiveTab = index === activeTabIndex;
-    tabs.splice(index, 1);
     if (wasActiveTab && index > 0) {
-      activeTabIndex = index - 1;
+      switchTab(index - 1);
     } else if (wasActiveTab && index === 0 && tabs.length > 0) {
-      activeTabIndex = 1;
+      switchTab(0);
     }
+    reactiveTabs.update((tabs) => {
+      tabs.splice(index, 1);
+      return tabs;
+    });
   }
 
   onMount(() => {
@@ -30,12 +37,11 @@
       activeTabElement.scrollIntoView({ inline: "center" });
     }
   });
-  let activeFile = tabs[activeTabIndex].id;
 </script>
 
 <main>
   <div class="tabs">
-    {#each tabs as tab, index (tab.id)}
+    {#each $reactiveTabs as tab, index (tab.id)}
       <div
         class="tab {index === activeTabIndex && 'active'}"
         on:click={() => switchTab(index)}
@@ -53,11 +59,12 @@
                 closeTab(index);
               }
             }}
-            ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"
-              ><path
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+              <path
                 d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"
-              /></svg
-            >
+              />
+            </svg>
           </span>
         {/if}
       </div>

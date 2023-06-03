@@ -5,7 +5,6 @@
   import { data as tabs } from "./assets/sampledata";
   let selectedTab;
   function handleTabSelected(event) {
-    debugger;
     selectedTab = tabs.find((tab) => tab.id === event.detail.selectedTab);
     console.log(selectedTab);
   }
