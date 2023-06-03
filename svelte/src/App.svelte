@@ -10,6 +10,7 @@
   }
 
   onMount(() => {
+    selectedTab = tabs[0];
     addEventListener("tabSelected", handleTabSelected);
     return () => {
       removeEventListener("tabSelected", handleTabSelected);
@@ -19,7 +20,11 @@
 
 <main>
   <Tabs {tabs} />
-  <MonacoEditor {selectedTab} />
+  {#each tabs as tab, index (tab.id)}
+    {#if selectedTab?.id === tab?.id}
+      <MonacoEditor {tab} />
+    {/if}
+  {/each}
 </main>
 
 <style>

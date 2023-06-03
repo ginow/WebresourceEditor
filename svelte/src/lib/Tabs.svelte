@@ -28,6 +28,15 @@
       tabs.splice(index, 1);
       return tabs;
     });
+    if (tabs.length === 0) {
+      dispatchEvent(
+        new CustomEvent("tabSelected", {
+          detail: {
+            selectedTab: null,
+          },
+        })
+      );
+    }
   }
 
   onMount(() => {

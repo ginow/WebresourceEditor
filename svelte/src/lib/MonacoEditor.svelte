@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy, afterUpdate } from "svelte";
 
-  export let selectedTab;
+  export let tab;
   let editor;
 
   onMount(() => {
@@ -21,8 +21,8 @@
         editor = monaco.editor.create(
           document.getElementById("monaco-editor"),
           {
-            value: selectedTab.content,
-            language: selectedTab.type,
+            value: tab.content,
+            language: tab.type,
             theme: "vs-dark",
           }
         );
@@ -34,10 +34,10 @@
   });
 
   afterUpdate(() => {
-    // Update the editor's content when selectedTab changes
-    if (editor && selectedTab) {
+    // Update the editor's content when tab changes
+    if (editor && tab) {
       const model = editor.getModel();
-      model.setValue(selectedTab.content);
+      model.setValue(tab.content);
     }
   });
 
