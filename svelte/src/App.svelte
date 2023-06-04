@@ -3,6 +3,13 @@
   import { onMount } from "svelte";
   import Tabs from "./lib/Tabs.svelte";
   import { data as tabs } from "./assets/sampledata";
+  import SidePanel from "./lib/SidePanel.svelte";
+
+  let width = 300;
+  // TODO: remove this if not required
+  function handleResize(event) {
+    width = event.detail;
+  }
   let selectedTab;
   function handleTabSelected(event) {
     selectedTab = tabs.find((tab) => tab.id === event.detail.selectedTab);
@@ -19,6 +26,7 @@
 </script>
 
 <main>
+  <SidePanel on:resize={handleResize} />
   <Tabs {tabs} />
   {#each tabs as tab, index (tab.id)}
     {#if selectedTab?.id === tab?.id}
