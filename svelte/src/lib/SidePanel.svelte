@@ -12,16 +12,31 @@
   let resizableContainer;
 
   function handleMouseDown(event) {
+    // Check if the mouse is near the right edge of the container
+    const isNearRightEdge =
+      event.clientX >= resizableContainer.getBoundingClientRect().right - 10;
+    if (!isNearRightEdge) {
+      return;
+    }
+
     isDragging = true;
     startX = event.clientX;
     startWidth = resizableContainer.offsetWidth;
   }
 
   function handleMouseMove(event) {
-    if (!isDragging) return;
+    if (!isDragging) {
+      // Check if the mouse is hovering over the right edge of the container
+      const isHoveringRightEdge =
+        event.clientX >= resizableContainer.getBoundingClientRect().right - 5;
+      resizableContainer.style.cursor = isHoveringRightEdge
+        ? "col-resize"
+        : "default";
+      return;
+    }
 
     const dx = event.clientX - startX;
-    containerWidth = Math.max(100, startWidth + dx); // Set a minimum width if needed
+    containerWidth = Math.max(0, startWidth + dx); // Set a minimum width if needed by replacing 0
   }
 
   function handleMouseUp() {
@@ -56,7 +71,6 @@
     position: relative;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
-    cursor: col-resize;
     overflow: hidden;
   }
 </style>
