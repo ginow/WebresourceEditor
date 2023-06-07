@@ -26,14 +26,32 @@
 </script>
 
 <main>
-  <SidePanel on:resize={handleResize} />
-  <Tabs {tabs} />
-  {#each tabs as tab, index (tab.id)}
-    {#if selectedTab?.id === tab?.id}
-      <MonacoEditor {tab} />
-    {/if}
-  {/each}
+  <div class="container">
+    <div class="side-panel">
+      <SidePanel on:resize={handleResize} />
+    </div>
+
+    <div class="tabs">
+      <Tabs {tabs} />
+      {#each tabs as tab, index (tab.id)}
+        {#if selectedTab?.id === tab?.id}
+          <MonacoEditor {tab} />
+        {/if}
+      {/each}
+    </div>
+  </div>
 </main>
 
 <style>
+  .container {
+    display: flex;
+  }
+
+  .side-panel {
+    flex: 0 0 auto;
+  }
+
+  .tabs {
+    flex: 1 1 auto;
+  }
 </style>
