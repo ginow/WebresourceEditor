@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { createEventDispatcher } from "svelte";
-
+  import { resize } from "./stores";
   const dispatch = createEventDispatcher();
   let containerWidth = 300; // Initial width of the resizable container
 
@@ -40,9 +40,11 @@
   }
 
   function handleMouseUp() {
+    debugger;
     if (isDragging) {
       isDragging = false;
-      dispatch("resize", containerWidth);
+      dispatch("resize");
+      resize.set(Date.now()); // Update the store value to trigger the event
     }
   }
 

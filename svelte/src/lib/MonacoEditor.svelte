@@ -1,5 +1,6 @@
 <script>
   import { onMount, onDestroy, afterUpdate } from "svelte";
+  import { resize } from "./stores";
 
   export let tab;
   let editor;
@@ -26,6 +27,9 @@
             theme: "vs-dark",
           }
         );
+        // Subscribe to the resize store
+        resize.subscribe(handleResize);
+
         handleResize();
         window.addEventListener("resize", handleResize);
       });
