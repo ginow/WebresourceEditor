@@ -1,6 +1,5 @@
 <script>
   import { onMount, onDestroy, afterUpdate } from "svelte";
-  import { resize } from "./stores";
 
   export let tab;
   let editor;
@@ -25,13 +24,9 @@
             value: tab.content,
             language: tab.type,
             theme: "vs-dark",
+            automaticLayout: true,
           }
         );
-        // Subscribe to the resize store
-        resize.subscribe(handleResize);
-
-        handleResize();
-        window.addEventListener("resize", handleResize);
       });
     };
     document.body.appendChild(loaderScript);
@@ -48,13 +43,8 @@
   onDestroy(() => {
     if (editor) {
       editor.dispose();
-      window.removeEventListener("resize", handleResize);
     }
   });
-
-  function handleResize() {
-    editor.layout();
-  }
 </script>
 
 <div id="monaco-editor" />

@@ -45,6 +45,7 @@
 <style>
   .container {
     display: flex;
+    max-width: 100vw;
   }
 
   .side-panel {

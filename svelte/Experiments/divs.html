@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div class="container">
+        <div class="side-panel">sidepanel</div>
+        <div class="tabs">
+            <div id="monaco-editor">editor</div>
+        </div>
+    </div>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .container {
+            background-color: grey;
+            display: flex;
+            border-radius: 15px;
+        }
+
+        .side-panel {
+            width: 300px;
+            flex: 0 0 auto;
+            background-color: blue;
+            border-radius: 15px;
+        }
+
+        .tabs {
+            flex: 1 1 auto;
+            display: flex;
+            background-color: chartreuse;
+            border-radius: 15px;
+            /* Add this line to allow flex layout within tabs container */
+        }
+
+        #monaco-editor {
+            height: 100vh;
+            background-color: chocolate;
+            flex-grow: 1;
+            border-radius: 15px;
+            /* Add this line to allow the editor to take up remaining space */
+        }
+    </style>
+</body>
+
+</html>
