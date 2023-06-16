@@ -94,6 +94,7 @@
 
   .tab {
     display: flex;
+    flex-shrink: 0; /* Prevent shrinking of tabs */
     align-items: center;
     padding: 8px 30px 8px 12px;
     background-color: #454545;
