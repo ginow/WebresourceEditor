@@ -45,14 +45,13 @@
 <style>
   .container {
     display: flex;
-    max-width: 100vw;
   }
 
   .side-panel {
-    flex: 0 0 auto;
+    width: 20vw;
   }
 
   .tabs {
-    flex: 1 1 auto;
+    width: 80vw;
   }
 </style>

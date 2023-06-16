@@ -61,7 +61,6 @@
 
 <div
   class="resizable-container"
-  style="width: {containerWidth}px; left: 0;"
   on:mousedown={handleMouseDown}
   bind:this={resizableContainer}
 >
