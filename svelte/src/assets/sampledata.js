@@ -46,7 +46,6 @@ export let data = [
   }
 
   function handleMouseUp() {
-    debugger;
     if (isDragging) {
       isDragging = false;
       dispatch("resize", containerWidth);

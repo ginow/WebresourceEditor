@@ -1,39 +1,39 @@
 <script>
   import Menu from "./Menu.svelte";
   import MenuOption from "./MenuOption.svelte";
-  import MenuDivider from "./MenuDivider.svelte";
-  import { tick } from "svelte";
 
   let showMenu = false;
-
-  function onRightClick(e) {
-    debugger;
-    if (showMenu) {
-      showMenu = true;
-    }
-    showMenu = true;
+  let fileMenu;
+  let location;
+  function onMenuClick() {
+    location = fileMenu.getBoundingClientRect();
+    showMenu = !showMenu;
   }
 
   function closeMenu() {
-    showMenu = false;
+    // showMenu = false;
   }
 </script>
 
 {#if showMenu}
-  <div style="color: aqua;">sdfsfd</div>
-  <Menu on:click={closeMenu} on:clickoutside={closeMenu}>
-    <MenuOption on:click={console.log} text="Do nothing" />
-    <MenuOption on:click={console.log} text="Do notsdfsdfhing, but twice" />
-    <MenuDivider />
-    <MenuOption
-      isDisabled={true}
-      on:click={console.log}
-      text="Whoops, disabled!"
-    />
-    <MenuOption on:click={console.log}>
-      <span>Look! An icon!</span>
-    </MenuOption>
+  <Menu {location} on:click={closeMenu} on:clickoutside={closeMenu}>
+    <MenuOption on:click={console.log} text="Save (Ctrl+S)" />
+    <MenuOption on:click={console.log} text="Publish (Ctrl+P)" />
+    <MenuOption on:click={console.log} text="Save and Publish (Ctrl+Shift+P)" />
   </Menu>
 {/if}
 
-<button on:click={onRightClick}>File</button>
+<button class="menu-button" bind:this={fileMenu} on:click={onMenuClick}
+  >File</button
+>
+
+<style>
+  .menu-button {
+    background-color: #333;
+    border: none;
+    color: #a4a4a4;
+  }
+  .menu-button:hover {
+    background-color: #222;
+  }
+</style>

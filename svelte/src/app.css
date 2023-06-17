@@ -4,5 +4,6 @@ body {
   overflow: hidden;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: small;
-  background-color: black;
+  background-color: #333;
+  color: #a4a4a4;
 }

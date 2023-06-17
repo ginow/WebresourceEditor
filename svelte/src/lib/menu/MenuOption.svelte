@@ -30,13 +30,13 @@
   div {
     padding: 4px 15px;
     cursor: default;
-    font-size: 14px;
     display: flex;
     align-items: center;
     grid-gap: 5px;
   }
   div:hover {
-    background: #0002;
+    background: black;
+    cursor: pointer;
   }
   div.disabled {
     color: #0006;

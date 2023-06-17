@@ -51,6 +51,8 @@
 
 <style>
   #monaco-editor {
-    height: calc(100vh - 30px); /*30px is height of tabs*/
+    height: calc(
+      100vh - 48px
+    ); /*30px is height of tabs, 18px is height of menu button*/
   }
 </style>

@@ -27,12 +27,9 @@
 </script>
 
 <main>
+  <CustomMenu />
   <div class="container">
-    <div class="menu">
-      <CustomMenu />
-    </div>
-
-    <!-- <div class="side-panel">
+    <div class="side-panel">
       <SidePanel on:resize={handleResize} />
     </div>
 
@@ -44,7 +41,6 @@
         {/if}
       {/each}
     </div>
-  </div> -->
   </div>
 </main>
 
