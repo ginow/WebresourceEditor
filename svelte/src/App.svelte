@@ -5,7 +5,16 @@
   import { data as tabs } from "./assets/sampledata";
   import SidePanel from "./lib/SidePanel.svelte";
   import CustomMenu from "./lib/menu/CustomMenu.svelte";
+  import Search from "./lib/Search.svelte";
+  let isPopupOpen = false;
 
+  function openPopup() {
+    isPopupOpen = true;
+  }
+
+  function closePopup() {
+    isPopupOpen = false;
+  }
   let width = 300;
   // TODO: remove this if not required
   function handleResize(event) {
@@ -27,6 +36,8 @@
 </script>
 
 <main>
+  <button on:click={openPopup}>Open Popup</button>
+  <Search isOpen={isPopupOpen} onClose={closePopup} />
   <CustomMenu />
   <div class="container">
     <div class="side-panel">

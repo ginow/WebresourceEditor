@@ -111,6 +111,8 @@
     right: 8px;
     transform: translateY(-50%);
     cursor: pointer;
+    width: 12px;
+    height: 12px;
   }
 
   .tab:hover .close-btn {
