@@ -96,7 +96,6 @@
     background-color: #454545;
     cursor: pointer;
     color: #a4a4a4;
-    transition: background-color 0.3s ease;
     position: relative; /* Add relative positioning */
   }
 
@@ -112,12 +111,6 @@
     right: 8px;
     transform: translateY(-50%);
     cursor: pointer;
-  }
-
-  .close-btn svg {
-    width: 12px;
-    height: 12px;
-    fill: #fff;
   }
 
   .tab:hover .close-btn {

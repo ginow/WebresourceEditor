@@ -4,6 +4,7 @@
   import Tabs from "./lib/Tabs.svelte";
   import { data as tabs } from "./assets/sampledata";
   import SidePanel from "./lib/SidePanel.svelte";
+  import CustomMenu from "./lib/menu/CustomMenu.svelte";
 
   let width = 300;
   // TODO: remove this if not required
@@ -27,7 +28,11 @@
 
 <main>
   <div class="container">
-    <div class="side-panel">
+    <div class="menu">
+      <CustomMenu />
+    </div>
+
+    <!-- <div class="side-panel">
       <SidePanel on:resize={handleResize} />
     </div>
 
@@ -39,6 +44,7 @@
         {/if}
       {/each}
     </div>
+  </div> -->
   </div>
 </main>
 
