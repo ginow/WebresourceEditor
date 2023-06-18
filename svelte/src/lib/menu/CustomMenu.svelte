@@ -1,10 +1,11 @@
 <script>
   import Menu from "./Menu.svelte";
   import MenuOption from "./MenuOption.svelte";
-
+  import { getContext } from "svelte";
   let showMenu = false;
   let fileMenu;
   let location;
+  const { openPopup } = getContext("app");
   function onMenuClick() {
     location = fileMenu.getBoundingClientRect();
     showMenu = !showMenu;
@@ -17,6 +18,7 @@
 
 {#if showMenu}
   <Menu {location} on:click={closeMenu} on:clickoutside={closeMenu}>
+    <MenuOption on:click={openPopup} text="Open (Ctrl+O)" />
     <MenuOption on:click={console.log} text="Save (Ctrl+S)" />
     <MenuOption on:click={console.log} text="Publish (Ctrl+P)" />
     <MenuOption on:click={console.log} text="Save and Publish (Ctrl+Shift+P)" />

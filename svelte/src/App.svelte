@@ -6,7 +6,11 @@
   import SidePanel from "./lib/SidePanel.svelte";
   import CustomMenu from "./lib/menu/CustomMenu.svelte";
   import Search from "./lib/Search.svelte";
+  import { setContext } from "svelte";
   let isPopupOpen = false;
+  setContext("app", {
+    openPopup,
+  });
 
   function openPopup() {
     isPopupOpen = true;
@@ -36,7 +40,6 @@
 </script>
 
 <main>
-  <button on:click={openPopup}>Open Popup</button>
   <Search isOpen={isPopupOpen} onClose={closePopup} />
   <CustomMenu />
   <div class="container">
