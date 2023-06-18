@@ -3,15 +3,22 @@
   import { key } from "./menu.js";
 
   export let location;
+  export let fileMenu;
   const dispatch = createEventDispatcher();
 
   setContext(key, {
     dispatchClick: () => dispatch("click"),
   });
 
-  let menuEl;
+  let menu;
   function onPageClick(e) {
-    if (e.target === menuEl || menuEl.contains(e.target)) return;
+    if (
+      e.target === menu ||
+      menu.contains(e.target) ||
+      e.target === fileMenu ||
+      fileMenu.contains(e.target)
+    )
+      return;
     dispatch("clickoutside");
   }
 </script>
@@ -19,7 +26,7 @@
 <svelte:body on:click={onPageClick} />
 
 <div
-  bind:this={menuEl}
+  bind:this={menu}
   style="top: {location.bottom}px; left: {location.left}px;"
 >
   <slot />

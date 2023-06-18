@@ -12,12 +12,12 @@
   }
 
   function closeMenu() {
-    // showMenu = false;
+    showMenu = false;
   }
 </script>
 
 {#if showMenu}
-  <Menu {location} on:click={closeMenu} on:clickoutside={closeMenu}>
+  <Menu {location} on:click={closeMenu} on:clickoutside={closeMenu} {fileMenu}>
     <MenuOption on:click={openPopup} text="Open (Ctrl+O)" />
     <MenuOption on:click={console.log} text="Save (Ctrl+S)" />
     <MenuOption on:click={console.log} text="Publish (Ctrl+P)" />
