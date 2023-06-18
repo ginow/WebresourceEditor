@@ -9,16 +9,28 @@
     "Content-Type": "application/json; charset=utf-8",
     Prefer: 'odata.include-annotations="*"',
   };
+  var webresources = [];
+  webresources = [
+    {
+      name: "con_contact.js",
+      displayname: "contact.js",
+      type: "javascript",
+      modifiedon: "23",
+    },
+    {
+      name: "con_account.js",
+      displayname: "account.js",
+      type: "javascript",
+      modifiedon: "33",
+    },
+    {
+      name: "con_quote.js",
+      displayname: "quote.js",
+      type: "javascript",
+      modifiedon: "33",
+    },
+  ];
   async function search() {
-    var webresources = [];
-    // var searchText = document.getElementById("searchInput")
-    // spinnerVisibility(true);
-    // Get all list items except the header
-    const listItems = document.querySelectorAll(
-      "#webresourceslist li:not(#header)"
-    );
-    // Remove existing li
-    listItems.forEach((element) => element.remove());
     var response = await fetch(
       window.location.origin +
         "/api/data/v9.2/webresourceset?$select=displayname,webresourceid,webresourcetype,modifiedon,name&$filter=contains(name,'" +
@@ -34,45 +46,6 @@
 
     webresources = await response.json();
     webresources = webresources.value;
-    const ul = document.getElementById("webresourceslist");
-    if (webresources.length > 0) {
-      document.getElementById("header").style.display = "inline";
-    } else {
-      var li = document.getElementById("header");
-      li.style.display = "none";
-      li.innerHTML = "";
-      // showNotification(searchText + " not found. Please check and try again.", notificationType.error, 5);
-    }
-
-    const webresource = webresources.map((each) => {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.id = each.webresourceid;
-      a.href = "#";
-      // a.onclick = selectWebresource;
-      const nameDiv = document.createElement("div");
-      nameDiv.className = "name";
-      nameDiv.textContent = each.name;
-      const displaynameDiv = document.createElement("div");
-      displaynameDiv.className = "displayname";
-      displaynameDiv.textContent = each.displayname;
-      const typeDiv = document.createElement("div");
-      typeDiv.className = "type";
-      // typeDiv.textContent = getWebResourceTypeString(each.webresourcetype);
-      const modifiedonDiv = document.createElement("div");
-      modifiedonDiv.className = "modifiedon";
-      modifiedonDiv.textContent = each.modifiedon;
-      a.appendChild(nameDiv);
-      a.appendChild(displaynameDiv);
-      a.appendChild(typeDiv);
-      a.appendChild(modifiedonDiv);
-      li.appendChild(a);
-      return li;
-    });
-
-    // Append list items to ul
-    ul.append(...webresource);
-    // spinnerVisibility(false);
   }
 </script>
 
@@ -97,13 +70,19 @@
         </button>
         <ul id="webresourceslist">
           <li id="header">
-            <a href="#" style="background-color: #2f2f2f;">
-              <div class="name">Name</div>
-              <div class="displayname">Display Name</div>
-              <div class="type">Type</div>
-              <div class="modifiedon">Modified On</div>
-            </a>
+            <div class="name">Name</div>
+            <div class="displayname">Display Name</div>
+            <div class="type">Type</div>
+            <div class="modifiedon">Modified On</div>
           </li>
+          {#each webresources as webresource}
+            <li class="rows">
+              <div class="name">{webresource.name}</div>
+              <div class="displayname">{webresource.displayname}</div>
+              <div class="type">{webresource.type}</div>
+              <div class="modifiedon">{webresource.modifiedon}</div>
+            </li>
+          {/each}
         </ul>
       </div>
     </div>
@@ -161,26 +140,29 @@
   }
   #webresourceslist {
     list-style-type: none;
-    padding: 0;
-    margin-top: 10;
     overflow: auto;
     height: 90vh;
+    padding: 0px;
   }
 
-  #webresourceslist li a {
-    padding: 12px;
+  .rows {
     text-decoration: none;
+    padding: 5px;
+    margin-top: 10;
     display: flex;
+    color: #a4a4a4;
     background-color: rgb(27, 27, 27);
   }
 
-  #webresourceslist li a:hover {
+  .rows:hover {
     background-color: #333333;
+    cursor: pointer;
   }
   #header {
-    display: none;
-    position: sticky;
-    top: 0;
+    display: flex;
+    padding: 5px;
+    background-color: #2f2f2f;
+    flex-direction: row;
   }
 
   .name,
