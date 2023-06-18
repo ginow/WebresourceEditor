@@ -2,7 +2,7 @@
 export let data = [
   {
     id: 1,
-    title: "some long name of the File 1",
+    title: "somelongnameoftheFile1",
     type: "javascript",
     content: ` 
   import { onMount, onDestroy } from "svelte";

@@ -31,11 +31,12 @@
 
 <style>
   .menu-button {
-    background-color: #333;
+    background-color: #212121;
     border: none;
     color: #a4a4a4;
   }
   .menu-button:hover {
-    background-color: #222;
+    background-color: #333;
+    border-radius: 5px;
   }
 </style>

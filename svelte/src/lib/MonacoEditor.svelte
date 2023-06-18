@@ -1,9 +1,10 @@
 <script>
   import { onMount, onDestroy, afterUpdate } from "svelte";
-
+  import { getContext } from "svelte";
   export let tab;
   let editor;
 
+  const { openPopup } = getContext("app");
   onMount(() => {
     const loaderScript = document.createElement("script");
     loaderScript.src =
@@ -25,6 +26,42 @@
             language: tab.type,
             theme: "vs-dark",
             automaticLayout: true,
+          }
+        );
+        // Define the command to execute when Ctrl+S is pressed (Save the webresource)
+        editor.addCommand(
+          // @ts-ignore
+          monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
+          function () {
+            // updateWebresource(editor.getValue(), webResource.webresourceid);
+            alert("save");
+          }
+        );
+        // Define the command to execute when Ctrl+P is pressed (Publish the webresource)
+        editor.addCommand(
+          // @ts-ignore
+          monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyP,
+          function () {
+            // publishWebResource(webResource.webresourceid);
+            alert("Publish");
+          }
+        );
+        // Define the command to execute when Ctrl+O is pressed (Open the webresource)
+        editor.addCommand(
+          // @ts-ignore
+          monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyO,
+          function () {
+            // openWebResource(webResource.name);
+            openPopup();
+          }
+        );
+        // Define the command to execute when Ctrl+Shift+P is pressed (Update and Publish the webresource)
+        editor.addCommand(
+          // @ts-ignore
+          monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyP,
+          function () {
+            // updateAndPublish(editor.getValue(), webResource.webresourceid);
+            alert("sava dn publish");
           }
         );
       });

@@ -4,7 +4,7 @@
   import Tabs from "./lib/Tabs.svelte";
   import { data as tabs } from "./assets/sampledata";
   import SidePanel from "./lib/SidePanel.svelte";
-  import CustomMenu from "./lib/menu/CustomMenu.svelte";
+  import FileMenu from "./lib/menu/FileMenu.svelte";
   import Search from "./lib/Search.svelte";
   import { setContext } from "svelte";
   let isPopupOpen = false;
@@ -41,10 +41,10 @@
 
 <main>
   <Search isOpen={isPopupOpen} onClose={closePopup} />
-  <CustomMenu />
+  <FileMenu />
   <div class="container">
     <div class="side-panel">
-      <SidePanel on:resize={handleResize} />
+      <SidePanel {tabs} on:resize={handleResize} />
     </div>
 
     <div class="tabs">

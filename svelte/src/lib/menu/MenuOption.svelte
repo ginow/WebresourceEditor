@@ -35,7 +35,8 @@
     grid-gap: 5px;
   }
   div:hover {
-    background: black;
+    background: #333;
+    border-radius: 5px;
     cursor: pointer;
   }
   div.disabled {

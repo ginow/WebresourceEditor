@@ -36,8 +36,8 @@
   div {
     position: absolute;
     display: grid;
-    border: 1px solid #0003;
-    box-shadow: 2px 2px 5px 0px #0002;
+    border: 1px solid #333;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2);
     background-color: #212121;
     z-index: 1;
   }

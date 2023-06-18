@@ -81,7 +81,6 @@
   .tabs {
     display: flex;
     overflow-x: auto;
-    background-color: #333;
     padding: 0;
     scrollbar-width: thin;
     scrollbar-color: #ccc #f5f5f5;
@@ -93,15 +92,21 @@
     flex-shrink: 0; /* Prevent shrinking of tabs */
     align-items: center;
     padding: 8px 30px 8px 12px;
-    background-color: #454545;
+    border-right: 1px solid #333;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
     cursor: pointer;
     color: #a4a4a4;
     position: relative; /* Add relative positioning */
   }
 
   .tab.active {
-    background-color: #212121;
-    color: #a4a4a4;
+    border-bottom: none;
+    background-color: #1e1e1e;
+    border-top: 2px solid #00aaff;
+  }
+  .tab:hover {
+    background-color: #1e1e1e;
   }
 
   .close-btn {
