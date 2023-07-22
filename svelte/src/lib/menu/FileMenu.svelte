@@ -14,12 +14,25 @@
   function closeMenu() {
     showMenu = false;
   }
+
+  function save() {
+    if (focusEditor) {
+      focusEditor();
+    }
+    var event = new KeyboardEvent("keydown", {
+      key: "p",
+      code: "KeyP",
+      ctrlKey: true,
+      bubbles: true,
+    });
+    document.dispatchEvent(event);
+  }
 </script>
 
 {#if showMenu}
   <Menu {location} on:click={closeMenu} on:clickoutside={closeMenu} {fileMenu}>
     <MenuOption on:click={openPopup} text="Open (Ctrl+O)" />
-    <MenuOption on:click={console.log} text="Save (Ctrl+S)" />
+    <MenuOption on:click={save} text="Save (Ctrl+S)" />
     <MenuOption on:click={console.log} text="Publish (Ctrl+P)" />
     <MenuOption on:click={console.log} text="Save and Publish (Ctrl+Shift+P)" />
   </Menu>

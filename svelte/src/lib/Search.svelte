@@ -30,7 +30,10 @@
       modifiedon: "33",
     },
   ];
+  webresources.push(...webresources);
+  let showSpinner = false;
   async function search() {
+    showSpinner = true;
     var response = await fetch(
       window.location.origin +
         "/api/data/v9.2/webresourceset?$select=displayname,webresourceid,webresourcetype,modifiedon,name&$filter=contains(name,'" +
@@ -44,8 +47,9 @@
       }
     );
 
-    webresources = await response.json();
-    webresources = webresources.value;
+    // webresources = await response.json();
+    // webresources = webresources.value;
+    // showSpinner = false;
   }
 </script>
 
@@ -58,32 +62,40 @@
           <CloseIcon />
         </button>
       </div>
-      <div id="searchContainer">
-        <input
-          id="searchInput"
-          placeholder="Enter name of webresource"
-          type="search"
-        />
-        <button id="search" on:click={search}>
-          Search
-          <span id="spinner" class="spinner" style="display:none;" />
-        </button>
-        <ul id="webresourceslist">
-          <li id="header">
-            <div class="name">Name</div>
-            <div class="displayname">Display Name</div>
-            <div class="type">Type</div>
-            <div class="modifiedon">Modified On</div>
-          </li>
-          {#each webresources as webresource}
-            <li class="rows">
-              <div class="name">{webresource.name}</div>
-              <div class="displayname">{webresource.displayname}</div>
-              <div class="type">{webresource.type}</div>
-              <div class="modifiedon">{webresource.modifiedon}</div>
+      <div class="search-container">
+        <div id="search-row">
+          <input
+            id="searchInput"
+            placeholder="Enter name of webresource"
+            type="search"
+          />
+          <button id="search" on:click={search}>
+            Search
+            {#if showSpinner}
+              <span id="spinner" class="spinner" />
+            {/if}
+          </button>
+        </div>
+        {#if webresources.length > 0}
+          <ul id="webresourceslist">
+            <li id="header">
+              <div class="name">Name</div>
+              <div class="displayname">Display Name</div>
+              <div class="type">Type</div>
+              <div class="modifiedon">Modified On</div>
             </li>
-          {/each}
-        </ul>
+            {#each webresources as webresource}
+              <li class="rows">
+                <div class="name">{webresource.name}</div>
+                <div class="displayname">{webresource.displayname}</div>
+                <div class="type">{webresource.type}</div>
+                <div class="modifiedon">{webresource.modifiedon}</div>
+              </li>
+            {/each}
+          </ul>
+        {:else}
+          <p>Webresource not found</p>
+        {/if}
       </div>
     </div>
   </div>
@@ -104,17 +116,16 @@
   }
 
   .popup {
-    position: relative;
     width: 75vw;
+    display: flex;
+    flex-wrap: wrap;
     height: 75vh;
     background-color: #212121;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.3);
   }
+
   .close-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
     height: 30px;
     width: 30px;
     background: none;
@@ -124,25 +135,29 @@
     align-items: center;
     justify-content: center;
   }
+
   .close-icon:hover {
     background-color: red;
   }
+
   .title-bar {
     height: 20px;
+    width: 100%;
     background-color: #333;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px;
+    padding: 5px 0px 5px 5px;
   }
+
   .title {
     margin: 0;
   }
+
   #webresourceslist {
     list-style-type: none;
-    overflow: auto;
-    height: 90vh;
-    padding: 0px;
+    overflow-y: auto;
+    padding: 0;
   }
 
   .rows {
@@ -158,6 +173,7 @@
     background-color: #333333;
     cursor: pointer;
   }
+
   #header {
     display: flex;
     padding: 5px;
@@ -176,15 +192,22 @@
     flex-direction: row;
     flex: 0 0 12.5%;
   }
+  .search-container {
+    display: flex;
+    width: 100%;
+    height: 90%;
+    flex-direction: column;
+    padding: 15px;
+  }
 
   input[type="search"] {
     background-color: #191919;
+    width: 50%;
     border: none;
     border-radius: 4px;
     color: #a4a4a4;
     padding: 12px;
     margin-right: 10px;
-    width: 50%;
   }
 
   button#search {
@@ -195,7 +218,6 @@
     cursor: pointer;
     color: #a4a4a4;
   }
-
   button#search:hover {
     background-color: #282828;
   }
@@ -214,8 +236,5 @@
     to {
       transform: rotate(360deg);
     }
-  }
-  #searchContainer {
-    padding: 15px;
   }
 </style>

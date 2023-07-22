@@ -3,7 +3,9 @@
   import { getContext } from "svelte";
   export let tab;
   let editor;
-
+  export const focusEditor = () => {
+    if (editor) editor.focus();
+  };
   const { openPopup } = getContext("app");
   onMount(() => {
     const loaderScript = document.createElement("script");
@@ -76,7 +78,6 @@
       model.setValue(tab.content);
     }
   });
-
   onDestroy(() => {
     if (editor) {
       editor.dispose();
