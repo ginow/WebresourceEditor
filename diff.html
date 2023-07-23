@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Webresource Diff</title>
+    <!-- Include Monaco editor's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/monaco-editor@0.37.1/min/vs/editor/editor.main.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background-color: black;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #diffContainer {
+            height: 100vh;
+        }
+
+    </style>
+</head>
+
+<body onload="onLoad()">
+    <div id="diffContainer"></div>
+    <script src="https://unpkg.com/monaco-editor@0.37.1/min/vs/loader.js"></script>
+    <script src="/WebResources/web_diff.js"></script>
+</body>
+
+</html>
