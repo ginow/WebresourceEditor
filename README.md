@@ -33,3 +33,12 @@ The solution for above problem is to have an editor like VS Code in the CRM itse
 ## References
 
 - Monaco editor: https://microsoft.github.io/monaco-editor/playground.html
+
+### Work in progress:
+- create a model driven app
+- create WebresourceHistory entity with
+  - Name (webresource schema name)
+  - content 
+- in post operation plugin create new webresource 
+- when double click on webreshistory then compare with latest
+- when select two and click compare

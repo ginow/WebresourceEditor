@@ -119,7 +119,8 @@ async function selectWebresource(event) {
         var editor = monaco.editor.create(document.getElementById('editorContainer'), {
             value: webResource.content,
             language: language,
-            theme: 'vs-dark'
+            theme: 'vs-dark',
+            automaticLayout: true
         });
         // Define the command to execute when Ctrl+S is pressed (Save the webresource)
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
