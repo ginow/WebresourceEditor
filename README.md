@@ -42,3 +42,4 @@ The solution for above problem is to have an editor like VS Code in the CRM itse
 - in post operation plugin create new webresource 
 - when double click on webreshistory then compare with latest
 - when select two and click compare
+- system job to delete

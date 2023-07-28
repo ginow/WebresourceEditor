@@ -1,10 +1,10 @@
 
 const headers = {
-    "OData-MaxVersion": "4.0",
-    "OData-Version": "4.0",
-    "Accept": "application/json",
-    "Content-Type": "application/json; charset=utf-8",
-    "Prefer": "odata.include-annotations=\"*\""
+    'OData-MaxVersion': '4.0',
+    'OData-Version': '4.0',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json; charset=utf-8',
+    'Prefer': 'odata.include-annotations=\'*\''
 }
 const webresourceType = {
     html: 1,
@@ -51,11 +51,16 @@ function getWebResourceTypeString(typeNumber) {
             return 'unknown format';
     }
 }
-async function onLoad() {
+// No usage of Xrm or formContext should happen until this method is called.
+async function setClientApiContext(xrm, formContext) {
+    // Optionally set Xrm and formContext as global variables on the page.
+    window.Xrm = xrm;
+    window._formContext = formContext;
     var language;
-    /*
-    var webResource = await getWebresource("con_contact.js");
-    switch (webResource.webresourcetype) {
+    var web_name=formContext.getAttribute("web_name").getValue();
+    var oldContent=atob(formContext.getAttribute("web_content").getValue());
+    var latestWebResource = await getWebresource(web_name);
+    switch (latestWebResource.webresourcetype) {
         case webresourceType.html: language = 'html';
             break;
         case webresourceType.css: language = 'css';
@@ -64,7 +69,6 @@ async function onLoad() {
             break;
         default: language = 'text'
     }
-    */
     // Configure the loader to use the minified version of the editor
     self.MonacoEnvironment = {
         getWorkerUrl: function (workerId, label) {
@@ -80,16 +84,16 @@ async function onLoad() {
     require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.37.1/min/vs' } });
     require(['vs/editor/editor.main'], function () {
         var originalModel = monaco.editor.createModel(
-            "This line is removed on the right.\njust some text\nabcd\nefgh\nSome more text",
-            "text/plain"
+            oldContent,
+            language
         );
         var modifiedModel = monaco.editor.createModel(
-            "just some text\nabcz\nzzzzefgh\nSome more text.\nThis line is removed on the left.",
-            "text/plain"
+            latestWebResource.content,
+            language 
         );
 
         var diffEditor = monaco.editor.createDiffEditor(
-            document.getElementById("diffContainer"),
+            document.getElementById('diffContainer'),
             {
                 enableSplitViewResizing: true,
                 readOnly: true,
@@ -103,24 +107,21 @@ async function onLoad() {
         });
     })
 }
-async function getWebresource(webresourceid) {
+async function getWebresource(name) {
     try {
         var webResource = {
-            name: null,
-            webresourceid: webresourceid,
+            name: name,
+            webresourceid: null,
             content: null,
             webresourcetype: null
         }
-        var response = await fetch(window.location.origin + "/api/data/v9.2/webresourceset(" + webresourceid + ")?$select=content,name,webresourceid,webresourcetype", {
-            method: "GET",
-            headers: headers
-        })
-        const data = await response.json();
-        const encodedContent = data["content"];
+        var response = await Xrm.WebApi.retrieveMultipleRecords('webresource','?$select=content,name,webresourceid,webresourcetype&$filter=name eq \''+name+'\'');
+        var data=response.entities[0];
+        const encodedContent =data.content;
         webResource.content = atob(encodedContent);
-        webResource.webresourceid = data["webresourceid"];
-        webResource.webresourcetype = data["webresourcetype"];
-        webResource.name = data["name"]
+        webResource.webresourceid = data['webresourceid'];
+        webResource.webresourcetype = data['webresourcetype'];
+        webResource.name = data['name']
         document.title = webResource.name;
         return webResource;
     }
