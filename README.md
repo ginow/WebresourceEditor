@@ -30,16 +30,26 @@ The solution for above problem is to have an editor like VS Code in the CRM itse
 - Press CTRL+O to open the webresource in new tab.
 - Almost all other keyboard shortcuts of VS Code editor will work as well.
 
+## Using the Model driven app to edit and see history (New feature)
+- Play the model driven app "WebresourceEditor" present in the solution
+
+  ![Model Driven Editor Screenshot](resources/modeldriveneditor.png)
+
+- After doing the edits you can see the history as well
+
+  ![History Grid](resources/historygrid.png)
+  
+- Double click on any history, the webresource will be compared with the latest version present in the system.
+
+  ![diff](resources/diff.png)
+
 ## References
 
 - Monaco editor: https://microsoft.github.io/monaco-editor/playground.html
 
-### Work in progress:
-- create a model driven app
-- create WebresourceHistory entity with
-  - Name (webresource schema name)
-  - content 
-- in post operation plugin create new webresource 
-- when double click on webreshistory then compare with latest
-- when select two and click compare
-- system job to delete
+## Limitations set for safety
+- This tool has no limitations but still for safety of your D365 org and applications below limitations have been set: 
+  - Currently this tool will limit the maximum history at any point of time to 5000 records. If more histories are generated then the oldest history is deleted first. This limitation can be removed or changed by updating the source code of plugin.
+  - The maximum characters the webresource can be compared is limited to 100000 characters. This limitation can be changed by modifying the character count limit of `web_content` field of `web_webresourcehistory` table
+
+    ![Character limit](resources/characterlimit.png)
