@@ -35,14 +35,15 @@ namespace WebresourceEditor
                     if (context.PreEntityImages.Contains("PreImage"))
                     {
                         Entity preImage = (Entity)context.PreEntityImages["PreImage"];
-                        if (preImage.Contains("content") && preImage["content"] is string && preImage.Contains("name") && preImage["name"] is string)
+                        // Create history record only if content is different
+                        if (preImage.Contains("content") && preImage["content"] is string && preImage.Contains("name") && preImage["name"] is string && entity.Contains("content") && !string.Equals(entity["content"], preImage["content"]))
                         {
                             string webresourceContent = (string)preImage["content"];
                             string name = (string)preImage["name"];
 
                             // Create a new record in the WebresourceHistory table with the content value
                             CreateWebresourceHistoryRecord(name, webresourceContent, service);
-                            LimitHistory(service );
+                            LimitHistory(service);
                         }
                     }
                 }
@@ -53,7 +54,7 @@ namespace WebresourceEditor
             }
         }
 
-        private void LimitHistory(IOrganizationService service  )
+        private void LimitHistory(IOrganizationService service)
         {
             // Define the FetchXML query to get count and name sorted by createdon in ascending order
             string fetchXml = @"
@@ -75,7 +76,7 @@ namespace WebresourceEditor
             }
         }
 
-        private void CreateWebresourceHistoryRecord(string name, string webresourceContent, IOrganizationService service )
+        private void CreateWebresourceHistoryRecord(string name, string webresourceContent, IOrganizationService service)
         {
             Entity webresourceHistory = new Entity("web_webresourcehistory");
             webresourceHistory["web_content"] = webresourceContent;

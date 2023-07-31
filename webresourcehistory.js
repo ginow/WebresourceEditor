@@ -6,7 +6,14 @@ function form_onload(executionContext) {
     if (wrControl) {
         wrControl.getContentWindow().then(
             function (contentWindow) {
-                contentWindow.setClientApiContext(Xrm, formContext);
+                if (contentWindow.setClientApiContext && typeof contentWindow.setClientApiContext === "function") {
+                    contentWindow.setClientApiContext(Xrm, formContext);
+                } else {
+                    // The function does not exist or is not a function, handle the situation accordingly
+                    console.log("setClientApiContext is not available.");
+                    // formContext.data.refresh();
+                    // location.reload();
+                }
             }
         )
     }
